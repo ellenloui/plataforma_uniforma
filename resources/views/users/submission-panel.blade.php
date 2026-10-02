@@ -1,8 +1,10 @@
+
 @extends('layouts.user-layout')
 
 @section('title', 'Submissões Enviadas')
 
 @section('content')
+
 
 <div class="space-y-8">
 
@@ -132,7 +134,22 @@
 {{-- LISTA DE SUBMISSÕES --}}
 <div class="grid gap-5">
 
-    @forelse ($allDemands as $demand)
+
+
+   @forelse ($allDemands as $demand)
+
+        @php
+            $viewer = auth('user')->user();
+            $adminViewer = auth('admin')->user();
+            $isOpen = $demand->status->allowsInteractions();
+            $isAuthor = $viewer && $demand->autor_id === $viewer->id;
+            
+            // A VARIÁVEL CANTEACH ESTÁ AQUI AGORA:
+            $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico'], true)) ?? false;
+            
+            $supported = (bool) ($demand->supported_by_current_user ?? false);
+            $interested = (bool) ($demand->teaching_interest_by_current_user ?? false);
+        @endphp
 
         @php
             $status = $demand->status instanceof \BackedEnum
@@ -189,26 +206,7 @@
                     {{-- Autor + data --}}
                     <div class="mt-3 flex items-center gap-2 text-sm text-slate-500">
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
-                            />
-
-                            <circle
-                                cx="12"
-                                cy="7"
-                                r="4"
-                            />
-                        </svg>
+                        <i class="ph ph-user"></i>
 
                         <span>
                             Enviado por {{ $demand->autor?->name ?? 'Autor não informado' }}
@@ -255,34 +253,88 @@
 
 
             {{-- Rodapé do card --}}
-            <div
-                class="mt-6 flex flex-col gap-4 border-t
-                       border-slate-100 pt-5 sm:flex-row
-                       sm:items-center sm:justify-between"
-            >
+           {{-- Rodapé do card --}}
+<div
+    class="mt-6 flex flex-col gap-4 border-t
+           border-slate-100 pt-5
+           lg:flex-row lg:items-center lg:justify-between"
+>
 
-                <div class="text-sm text-slate-500">
-                    Público-alvo:
+    {{-- Público-alvo --}}
 
-                    <span class="font-semibold text-slate-700">
-                        {{ $demand->target_audience }}
-                    </span>
-                </div>
 
-                <a
-                    href="##"
-                    class="inline-flex items-center justify-center
-                           rounded-xl border border-slate-300
-                           px-5 py-2.5 text-sm font-semibold
-                           text-slate-600 transition
-                           hover:border-[#0040A1]
-                           hover:text-[#0040A1]"
-                >
-                    Ver detalhes
-                </a>
 
-            </div>
+    {{-- Ações --}}
+    {{-- Ações --}}
+<div class="flex flex-wrap gap-3">
 
+    @if (! $viewer && ! $adminViewer)
+        {{-- VISITANTES NÃO LOGADOS: Redireciona para o login --}}
+        @if ($isOpen)
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0040A1] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 active:scale-[0.98]">
+                Apoiar Demanda
+            </a>
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.98]">
+                Quero Ministrar
+            </a>
+        @else
+            <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-500">Apoiar Demanda</span>
+            <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-400">Quero Ministrar</span>
+        @endif
+
+    @elseif ($viewer)
+        {{-- USUÁRIOS COMUNS LOGADOS: Formulários POST/DELETE reais --}}
+        
+        {{-- 1. Botão de Apoiar --}}
+        @if ($isOpen && ! $isAuthor)
+            <form method="POST" action="{{ $supported ? route('user.submissions.support.destroy', ['submission' => $demand->id]) : route('user.submissions.support', ['submission' => $demand->id]) }}">
+                @csrf
+                @if ($supported) @method('DELETE') @endif
+                
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0040A1] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 active:scale-[0.98]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2" />
+                    </svg>
+                    {{ $supported ? 'Retirar Apoio' : 'Apoiar Demanda' }}
+                </button>
+            </form>
+        @else
+            <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-500" title="{{ $isAuthor ? 'Você não pode apoiar a própria demanda' : 'Interações encerradas' }}">Apoiar Demanda</span>
+        @endif
+
+        {{-- 2. Botão de Ministrar --}}
+        @if ($isOpen && ($canTeach || $interested))
+            <form method="POST" action="{{ $interested ? route('user.submissions.teaching-interest.destroy', ['submission' => $demand->id]) : route('user.submissions.teaching-interest', ['submission' => $demand->id]) }}">
+                @csrf
+                @if ($interested) @method('DELETE') @endif
+                
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.98]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7" />
+                    </svg>
+                    {{ $interested ? 'Retirar Interesse' : 'Quero Ministrar' }}
+                </button>
+            </form>
+        @else
+            <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-400">Quero Ministrar</span>
+        @endif
+
+    @else
+        {{-- ADMINISTRADORES: Botões bloqueados --}}
+        <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-500" title="Disponível para usuários comuns">Apoiar Demanda</span>
+        <span class="cursor-not-allowed inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-400" title="Disponível para usuários comuns">Quero Ministrar</span>
+    @endif
+
+    {{-- Botão de Detalhes (Link comum funciona perfeitamente aqui) --}}
+    <a href="{{ route('demands.show', $demand->id) }}" class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-[#0040A1] hover:bg-slate-50 hover:text-[#0040A1]">
+        Ver detalhes
+    </a>
+
+</div>
+
+</div>
         </article>
 
     @empty

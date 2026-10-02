@@ -37,7 +37,41 @@
                             <td class="px-5 py-4">{{ $demand->votes_count }}</td>
                             <td class="px-5 py-4">{{ $demand->teaching_interests_count }}</td>
                             <td class="px-5 py-4 text-slate-500">{{ $demand->created_at?->format('d/m/Y') }}</td>
-                            <td class="px-5 py-4 text-right"><a href="{{ route('demands.show', $demand->id) }}" class="font-semibold text-blue-700 hover:text-blue-900">Ver detalhes</a></td>
+                           <td class="px-4 py-3 text-right sm:text-left">
+    <div class="flex items-center gap-4">
+        
+        {{-- Visualizar Detalhes --}}
+        <a href="{{ route('demands.show', $demand->id) }}" 
+           class="text-[#0040A1] transition hover:text-blue-900" 
+           title="Ver detalhes">
+            <i class="ph ph-eye text-xl"></i>
+        </a>
+
+        {{-- Regra opcional: Só mostrar Editar/Excluir se estiver "Em votação" --}}
+        @if ($demand->status->value === 'Em votação')
+            
+            {{-- Editar --}}
+            <a href="{{ route('user.submissions.edit', $demand->id) }}" 
+               class="text-slate-500 transition hover:text-amber-600" 
+               title="Editar demanda">
+                <i class="ph ph-pencil-simple text-xl"></i>
+            </a>
+
+            {{-- Excluir (Obrigatório usar <form> e método DELETE) --}}
+            <form method="POST" action="{{ route('user.submissions.destroy', $demand->id) }}" 
+                  onsubmit="return confirm('Tem certeza que deseja excluir esta demanda? Esta ação não pode ser desfeita.');" 
+                  class="m-0 flex">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-slate-500 transition hover:text-red-600" title="Excluir demanda">
+                    <i class="ph ph-trash text-xl"></i>
+                </button>
+            </form>
+
+        @endif
+
+    </div>
+</td>
                         </tr>
                     @empty
                         <tr><td colspan="6" class="px-5 py-12 text-center text-slate-500">Você ainda não criou nenhuma demanda.</td></tr>

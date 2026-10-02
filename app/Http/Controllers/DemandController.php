@@ -120,7 +120,8 @@ class DemandController extends Controller
     }
 
     public function showSub(){
-    $userId = auth('user')->id();
+        
+        $userId = auth('user')->id();
 
         $allDemands = $this->demandRepository->getAllPublic($userId);
     return view('users.submission-panel', compact('allDemands'));
