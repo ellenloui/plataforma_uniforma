@@ -1,58 +1,267 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Plataforma UniForma
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A **Plataforma UniForma** é uma aplicação web desenvolvida para apoiar atividades acadêmicas e processos de formação vinculados à **Universidade Estadual de Montes Claros (Unimontes)**.
 
-## About Laravel
+O sistema busca facilitar a organização, submissão, acompanhamento e gerenciamento de trabalhos e atividades acadêmicas, oferecendo diferentes recursos para usuários e responsáveis pela gestão da plataforma.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este repositório corresponde a um **fork do projeto original da Plataforma UniForma**, utilizado para desenvolvimento, acompanhamento e registro das minhas contribuições ao sistema.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Funcionalidades
 
-## Learning Laravel
+Entre as funcionalidades da plataforma estão:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Cadastro e autenticação de usuários;
+- Gerenciamento de perfis e permissões;
+- Submissão de trabalhos e propostas;
+- Acompanhamento das submissões realizadas;
+- Visualização e gerenciamento de submissões;
+- Processo de curadoria e avaliação;
+- Registro de interesses em atividades;
+- Sistema de votos;
+- Pesquisa de submissões;
+- Filtros para facilitar a localização e organização dos registros;
+- Diferentes funcionalidades de acordo com o perfil e permissões do usuário.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Tecnologias utilizadas
 
-## Agentic Development
+O projeto utiliza principalmente:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **PHP**
+- **Laravel**
+- **Blade**
+- **JavaScript**
+- **HTML**
+- **CSS**
+- **Banco de dados relacional**
+- **Git**
+- **GitHub**
 
-```bash
-composer require laravel/boost --dev
+O framework Laravel é utilizado para a implementação da aplicação web, organização das rotas, controllers, models, repositories, regras de negócio e comunicação com o banco de dados.
 
-php artisan boost:install
+---
+
+## Estrutura do projeto
+
+A aplicação segue a organização fornecida pelo Laravel, incluindo diretórios responsáveis por diferentes partes do sistema.
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   └── Requests/
+│
+├── Models/
+│
+├── Repositories/
+│   └── Eloquent/
+│
+resources/
+├── views/
+│
+routes/
+├── web.php
+│
+database/
+├── migrations/
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Controllers
 
-## Contributing
+Responsáveis por receber as requisições realizadas pela aplicação e coordenar o fluxo entre as diferentes camadas do sistema.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Models
 
-## Code of Conduct
+Representam as entidades da aplicação e realizam a comunicação com o banco de dados por meio do Eloquent ORM.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Repositories
 
-## Security Vulnerabilities
+Utilizados para organizar as consultas e operações relacionadas aos dados da aplicação, separando parte da lógica de acesso aos dados dos controllers.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Views
 
-## License
+Contêm as páginas e componentes responsáveis pela interface apresentada ao usuário.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Routes
+
+Definem as URLs disponíveis na aplicação e direcionam cada requisição para seu respectivo controller.
+
+---
+
+## Minhas contribuições
+
+Este fork é utilizado para registrar as funcionalidades e melhorias desenvolvidas durante minha participação no projeto.
+
+Entre as atividades realizadas estão:
+
+- Desenvolvimento e manutenção de funcionalidades da plataforma;
+- Implementação de funcionalidades utilizando Laravel;
+- Alterações em controllers, repositories e views;
+- Melhorias na interface de submissões;
+- Implementação de pesquisa de submissões por título;
+- Implementação e aperfeiçoamento de filtros;
+- Integração dos filtros entre frontend e backend;
+- Correções e melhorias no fluxo de consulta das submissões;
+- Utilização de Git e GitHub para versionamento do código;
+- Desenvolvimento em branch própria e envio das alterações para revisão por meio de Pull Requests.
+
+---
+
+## Pesquisa e filtros
+
+Uma das melhorias implementadas na plataforma envolve o sistema de pesquisa e filtragem das submissões.
+
+A funcionalidade permite que os registros sejam consultados de acordo com parâmetros enviados pela interface, como termos de pesquisa e filtros disponíveis.
+
+No backend, as consultas são realizadas utilizando os recursos do **Eloquent ORM**, permitindo combinar condições de pesquisa com paginação e relacionamentos entre as entidades.
+
+Exemplo simplificado do fluxo:
+
+```text
+Usuário seleciona um filtro
+          ↓
+Interface envia os parâmetros
+          ↓
+Controller recebe a requisição
+          ↓
+Repository aplica os filtros
+          ↓
+Consulta é realizada no banco
+          ↓
+Resultados são paginados
+          ↓
+Interface exibe as submissões encontradas
+```
+
+Essa estrutura permite manter a lógica de consulta organizada e facilita futuras melhorias no sistema de pesquisa.
+
+---
+
+## Instalação
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/ellenloui/plataforma_uniforma.git
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd plataforma_uniforma
+```
+
+### 2. Instale as dependências do PHP
+
+```bash
+composer install
+```
+
+### 3. Instale as dependências do frontend
+
+```bash
+npm install
+```
+
+### 4. Configure o ambiente
+
+Crie o arquivo `.env` a partir do arquivo de exemplo:
+
+```bash
+cp .env.example .env
+```
+
+No Windows, o arquivo também pode ser copiado manualmente.
+
+Configure no `.env` as informações necessárias para o banco de dados e demais serviços utilizados pela aplicação.
+
+### 5. Gere a chave da aplicação
+
+```bash
+php artisan key:generate
+```
+
+### 6. Execute as migrations
+
+```bash
+php artisan migrate
+```
+
+### 7. Execute o frontend
+
+```bash
+npm run dev
+```
+
+### 8. Inicie a aplicação
+
+```bash
+php artisan serve
+```
+
+Por padrão, a aplicação poderá ser acessada em:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## Versionamento
+
+Durante o desenvolvimento são utilizados **Git e GitHub** para controle de versão.
+
+As alterações deste fork são desenvolvidas principalmente na branch:
+
+```text
+develop-v2
+```
+
+Fluxo utilizado:
+
+```text
+Projeto original
+      ↓
+Fork pessoal
+      ↓
+Branch de desenvolvimento
+      ↓
+Alterações
+      ↓
+Commit
+      ↓
+Push
+      ↓
+Pull Request
+```
+
+---
+
+## Repositório original
+
+Este projeto é baseado no repositório da **Plataforma UniForma**.
+
+Repositório original:
+
+```text
+uniforma/plataforma_uniforma
+```
+
+Este fork mantém as alterações e contribuições realizadas durante minha participação no desenvolvimento da plataforma.
+
+---
+
+## Autoria e contribuição
+
+**Ellen Louise Freitas Santos**
+
+Desenvolvimento e contribuição na Plataforma UniForma, incluindo implementação de funcionalidades, manutenção do sistema, melhorias no fluxo de submissões e desenvolvimento de mecanismos de pesquisa e filtragem.
+
+---
+
+## Observação
+
+A Plataforma UniForma é um projeto desenvolvido de forma colaborativa. Este repositório não representa autoria exclusiva da aplicação, mas registra as contribuições realizadas por mim durante o desenvolvimento do projeto.
