@@ -2,7 +2,7 @@
 
 A **Plataforma UniForma** é uma aplicação web desenvolvida para apoiar atividades acadêmicas e processos de formação vinculados à **Universidade Estadual de Montes Claros (Unimontes)**.
 
-O sistema busca facilitar a organização, submissão, acompanhamento e gerenciamento de trabalhos e atividades acadêmicas, oferecendo diferentes recursos para usuários e responsáveis pela gestão da plataforma.
+O sistema busca facilitar a organização, submissão, acompanhamento e gerenciamento de demandas formativas, oferecendo diferentes recursos para usuários e responsáveis pela gestão da plataforma.
 
 Este repositório corresponde a um **fork do projeto original da Plataforma UniForma**, utilizado para desenvolvimento, acompanhamento e registro das minhas contribuições ao sistema.
 
@@ -14,7 +14,7 @@ Entre as funcionalidades da plataforma estão:
 
 - Cadastro e autenticação de usuários;
 - Gerenciamento de perfis e permissões;
-- Submissão de trabalhos e propostas;
+- Submissão de propostas;
 - Acompanhamento das submissões realizadas;
 - Visualização e gerenciamento de submissões;
 - Processo de curadoria e avaliação;
