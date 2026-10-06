@@ -119,13 +119,16 @@ class DemandController extends Controller
         return back()->with('status', 'Interesse em ministrar retirado.');
     }
 
-    public function showSub(){
-        
+    public function showSub(Request $request)
+    {
         $userId = auth('user')->id();
 
-        $allDemands = $this->demandRepository->getAllPublic($userId);
-    return view('users.submission-panel', compact('allDemands'));
+        $allDemands = $this->demandRepository->getAllPublic(
+            $userId,
+            $request
+        );
 
+        return view('users.submission-panel', compact('allDemands'));
     }
 
 

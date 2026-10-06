@@ -63,4 +63,25 @@ class Submissao extends Model
             ->logOnlyDirty()
             ->logAll();
     }
+
+    public function scopeApplyQueryFilters($query, $request)
+{
+    if (! $request) {
+        return $query;
+    }
+
+    // Pesquisa pelo título
+    if ($request->filled('search')) {
+        $search = trim($request->input('search'));
+
+        $query->where('title', 'like', '%' . $search . '%');
+    }
+
+    // Filtro por status
+    if ($request->filled('status')) {
+        $query->where('status', $request->input('status'));
+    }
+
+    return $query;
+}
 }

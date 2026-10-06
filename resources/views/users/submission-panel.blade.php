@@ -41,16 +41,21 @@
     </section>
 
 
-    {{-- Busca e filtros --}}
-    <section class="rounded-2xl bg-white p-6 shadow-sm">
+{{-- Busca e filtros --}}
+<section class="rounded-2xl bg-white p-6 shadow-sm">
 
-        <div class="grid gap-4 md:grid-cols-3">
+    <form method="GET" action="{{ route('user.submissions.showSub') }}">
+
+        <div class="grid gap-4 md:grid-cols-12 md:items-end">
 
             {{-- Busca --}}
-            <div class="md:col-span-2">
+            <div class="md:col-span-7">
 
-                <label class="mb-2 block text-sm font-semibold text-slate-700">
-                    Buscar submissão
+                <label
+                    for="search"
+                    class="mb-2 block text-sm font-semibold text-slate-700"
+                >
+                    Buscar submissões
                 </label>
 
                 <div class="relative">
@@ -61,6 +66,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        aria-hidden="true"
                     >
                         <path
                             stroke-linecap="round"
@@ -72,6 +78,9 @@
 
                     <input
                         type="text"
+                        id="search"
+                        name="search"
+                        value="{{ request('search') }}"
                         placeholder="Pesquise pelo título da demanda..."
                         class="w-full rounded-xl border border-slate-300
                                py-3 pl-12 pr-4 text-sm
@@ -85,33 +94,201 @@
             </div>
 
 
-            {{-- Filtro status --}}
-            <div>
+            {{-- Filtro por status --}}
+            <div class="md:col-span-3">
 
-                <label class="mb-2 block text-sm font-semibold text-slate-700">
+                <label
+                    for="status"
+                    class="mb-2 block text-sm font-semibold text-slate-700"
+                >
                     Status
                 </label>
 
                 <select
+                    id="status"
+                    name="status"
                     class="w-full rounded-xl border border-slate-300
                            bg-white px-4 py-3 text-sm
                            outline-none transition
                            focus:border-[#0040A1]
                            focus:ring-2 focus:ring-blue-100"
                 >
-                    <option>Todos os status</option>
-                    <option>Em votação</option>
-                    <option>Alta relevância</option>
-                    <option>Em curadoria</option>
-                    <option>Oficializado</option>
-                    <option>Arquivado</option>
+
+                    <option value="">
+                        Todos os status
+                    </option>
+
+                    <option
+                        value="Em votação"
+                        @selected(request('status') === 'Em votação')
+                    >
+                        Em votação
+                    </option>
+
+                    <option
+                        value="Alta Relevância"
+                        @selected(request('status') === 'Alta Relevância')
+                    >
+                        Alta relevância
+                    </option>
+
+                    <option
+                        value="Em Curadoria"
+                        @selected(request('status') === 'Em Curadoria')
+                    >
+                        Em curadoria
+                    </option>
+
+                    <option
+                        value="Oficializado"
+                        @selected(request('status') === 'Oficializado')
+                    >
+                        Oficializado
+                    </option>
+
+                    <option
+                        value="Arquivado"
+                        @selected(request('status') === 'Arquivado')
+                    >
+                        Arquivado
+                    </option>
+
                 </select>
+
+            </div>
+
+
+            {{-- Botão Buscar --}}
+            <div class="md:col-span-2">
+
+                <button
+                    type="submit"
+                    class="inline-flex w-full items-center justify-center gap-2
+                           rounded-xl bg-[#0040A1] px-5 py-3
+                           text-sm font-semibold text-white
+                           transition
+                           hover:bg-blue-900
+                           focus:outline-none
+                           focus:ring-2
+                           focus:ring-blue-200
+                           focus:ring-offset-2
+                           active:scale-[0.98]"
+                >
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m21 21-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                    </svg>
+
+                    Buscar
+
+                </button>
 
             </div>
 
         </div>
 
-    </section>
+
+        {{-- Filtros ativos --}}
+        @if(request('search') || request('status'))
+
+            <div
+                class="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4
+                       sm:flex-row sm:items-center sm:justify-between"
+            >
+
+                <div class="flex flex-wrap items-center gap-2">
+
+                    <span class="text-sm font-medium text-slate-500">
+                        Filtros aplicados:
+                    </span>
+
+
+                    {{-- Pesquisa aplicada --}}
+                    @if(request('search'))
+
+                        <a
+                            href="{{ route(
+                                'user.submissions.index',
+                                request()->except(['search', 'page'])
+                            ) }}"
+                            class="inline-flex items-center gap-2
+                                   rounded-full bg-blue-50 px-3 py-1.5
+                                   text-xs font-semibold text-[#0040A1]
+                                   transition hover:bg-blue-100"
+                            title="Remover filtro de pesquisa"
+                        >
+                            Busca: "{{ request('search') }}"
+
+                            <span
+                                aria-hidden="true"
+                                class="text-base leading-none"
+                            >
+                                ×
+                            </span>
+
+                        </a>
+
+                    @endif
+
+
+                    {{-- Status aplicado --}}
+                    @if(request('status'))
+
+                        <a
+                            href="{{ route(
+                                'user.submissions.index',
+                                request()->except(['status', 'page'])
+                            ) }}"
+                            class="inline-flex items-center gap-2
+                                   rounded-full bg-blue-50 px-3 py-1.5
+                                   text-xs font-semibold text-[#0040A1]
+                                   transition hover:bg-blue-100"
+                            title="Remover filtro de status"
+                        >
+                            {{ request('status') }}
+
+                            <span
+                                aria-hidden="true"
+                                class="text-base leading-none"
+                            >
+                                ×
+                            </span>
+
+                        </a>
+
+                    @endif
+
+                </div>
+
+
+                {{-- Limpar todos --}}
+                <a
+                    href="{{ route('user.submissions.showSub') }}"
+                    class="shrink-0 text-sm font-semibold text-slate-500
+                           transition hover:text-[#0040A1]"
+                >
+                    Limpar filtros
+                </a>
+
+            </div>
+
+        @endif
+
+    </form>
+
+</section>
 
 
     {{-- Quantidade --}}
@@ -144,7 +321,7 @@
             $isOpen = $demand->status->allowsInteractions();
             $isAuthor = $viewer && $demand->autor_id === $viewer->id;
             
-            // A VARIÁVEL CANTEACH ESTÁ AQUI AGORA:
+           
             $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico'], true)) ?? false;
             
             $supported = (bool) ($demand->supported_by_current_user ?? false);

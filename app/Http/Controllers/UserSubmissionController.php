@@ -10,6 +10,8 @@ use App\Repositories\Eloquent\SubmissaoRepository;
 
 class UserSubmissionController extends Controller
 {
+      private SubmissaoRepository $submissaoRepository;
+
 
     public function __construct(SubmissaoRepository $submissaoRepository)
     {
@@ -51,4 +53,7 @@ public function destroy(string $id){
 
     return redirect()->route('user.submissions.index')->with('success', 'Demanda excluída com sucesso!');
 }
+
+
+
 }
